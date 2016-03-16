@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Search Form</title>
+
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/styles.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container" ng-controller="QueryBuilderCtrl">
+    <h1>Search Form</h1>
+
+    <form role="form">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-6 form-group ">
+                <label for="trx_ref">Transaction Reference</label>
+                <input type="text" class="form-control" id="trx_ref" placeholder="Transaction Reference">
+            </div>
+            <div class="col-md-6 form-group ">
+                <label for="trx_ref">Status</label>
+                <select class="form-control" id="status">
+                    <option>Reportable</option>
+                    <option>Non-reportable</option>
+                    <option>Exception</option>
+                    <option>Rejects</option>
+                    <option>Reported</option>
+                </select>
+            </div>
+        </div>
+        <div class="collapse" id="advancedsearch">
+  <div class="well">
+     <div class="alert alert-info">
+            <strong>Example Output</strong><br>
+            <span ng-bind-html="output"></span>
+        </div>
+
+        <query-builder group="filter.group"></query-builder>
+  </div>
+</div>
+    <button type="submit" class="btn btn-default">Cancel</button>
+    <button type="submit" class="btn btn-default">Submit</button>
+    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#advancedsearch" aria-expanded="false" >
+    Advanced search
+    </button>
+
+      
+    </div>
+    
+  </form>
+
+       
+    </div>
+
+    <script type="text/ng-template" id="/queryBuilderDirective.html">
+    <div class="alert alert-warning alert-group">
+        <div class="form-inline">
+            <select ng-options="o.name as o.name for o in operators" ng-model="group.operator" class="form-control input-sm"></select>
+            <button style="margin-left: 5px" ng-click="addCondition()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Condition</button>
+            <button style="margin-left: 5px" ng-click="addGroup()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Group</button>
+            <button style="margin-left: 5px" ng-click="removeGroup()" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span> Remove Group</button>
+        </div>
+        <div class="group-conditions">
+            <div ng-repeat="rule in group.rules | orderBy:'index'" class="condition">
+                <div ng-switch="rule.hasOwnProperty('group')">
+                    <div ng-switch-when="true">
+                        <query-builder group="rule.group"></query-builder>
+                    </div>
+                    <div ng-switch-default="ng-switch-default">
+                        <div class="form-inline">
+                            <select ng-options="t.name as t.name for t in fields" ng-model="rule.field" class="form-control input-sm"></select>
+                            <button style="margin-left: 5px" ng-click="removeCondition($index)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span></button> </br>
+                            <div ng-switch on="rule.field">
+                                  <div ng-switch-when="counterparty 1">
+                                    
+                                    <div class="form-group">
+                                      <label for="type">Code Type:</label>
+                                       <select style="margin-left: 5px" ng-options="c.name as c.name for c in conditions" ng-model="rule.condition" class="form-control input-sm"></select>
+                                      <select class="form-control" id="exampleSelect1" ng-model="rule.data1">
+                                        <option>BIC</option>
+                                        <option>ISLE</option>
+                                        <option>BMAR</option>
+                                      </select>
+                                    </div>
+                                    <div class="form-group">
+                                      <label for="type">Code</label>
+                                       <select style="margin-left: 5px" ng-options="c.name as c.name for c in conditions" ng-model="rule.condition" class="form-control input-sm"></select>
+                                      <input style="margin-left: 5px" type="text" ng-model="rule.data2" class="form-control input-sm" placeholder="code" />
+                                    </div>
+                            
+                            
+                                  </div>
+                                  
+                              </div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular-sanitize.min.js"></script>
+    <script src="angular-query-builder.js"></script>
+  </body>
+</html>
