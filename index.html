@@ -1,112 +1,162 @@
-<!DOCTYPE html>
-<html lang="en" ng-app="app">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Search Form</title>
-
-        <link href="css/bootstrap.min.css" rel="stylesheet">
-        <link href="css/styles.css" rel="stylesheet">
-  </head>
-  <body>
-    <div class="container" ng-controller="QueryBuilderCtrl">
-    <h1>Search Form</h1>
-
-    <form role="form">
-    <div class="form-group">
-        <div class="row">
-            <div class="col-md-6 form-group ">
-                <label for="trx_ref">Transaction Reference</label>
-                <input type="text" class="form-control" id="trx_ref" placeholder="Transaction Reference">
-            </div>
-            <div class="col-md-6 form-group ">
-                <label for="trx_ref">Status</label>
-                <select class="form-control" id="status">
-                    <option>Reportable</option>
-                    <option>Non-reportable</option>
-                    <option>Exception</option>
-                    <option>Rejects</option>
-                    <option>Reported</option>
-                </select>
-            </div>
-        </div>
-        <div class="collapse" id="advancedsearch">
-  <div class="well">
-     <div class="alert alert-info">
-            <strong>Example Output</strong><br>
-            <span ng-bind-html="output"></span>
-        </div>
-
-        <query-builder group="filter.group"></query-builder>
-  </div>
-</div>
-    <button type="submit" class="btn btn-default">Cancel</button>
-    <button type="submit" class="btn btn-default">Submit</button>
-    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#advancedsearch" aria-expanded="false" >
-    Advanced search
-    </button>
-
-      
-    </div>
-    
-  </form>
-
-       
-    </div>
-
-    <script type="text/ng-template" id="/queryBuilderDirective.html">
-    <div class="alert alert-warning alert-group">
-        <div class="form-inline">
-            <select ng-options="o.name as o.name for o in operators" ng-model="group.operator" class="form-control input-sm"></select>
-            <button style="margin-left: 5px" ng-click="addCondition()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Condition</button>
-            <button style="margin-left: 5px" ng-click="addGroup()" class="btn btn-sm btn-success"><span class="glyphicon glyphicon-plus-sign"></span> Add Group</button>
-            <button style="margin-left: 5px" ng-click="removeGroup()" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span> Remove Group</button>
-        </div>
-        <div class="group-conditions">
-            <div ng-repeat="rule in group.rules | orderBy:'index'" class="condition">
-                <div ng-switch="rule.hasOwnProperty('group')">
-                    <div ng-switch-when="true">
-                        <query-builder group="rule.group"></query-builder>
-                    </div>
-                    <div ng-switch-default="ng-switch-default">
-                        <div class="form-inline">
-                            <select ng-options="t.name as t.name for t in fields" ng-model="rule.field" class="form-control input-sm"></select>
-                            <button style="margin-left: 5px" ng-click="removeCondition($index)" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-minus-sign"></span></button> </br>
-                            <div ng-switch on="rule.field">
-                                  <div ng-switch-when="counterparty 1">
-                                    
-                                    <div class="form-group">
-                                      <label for="type">Code Type:</label>
-                                       <select style="margin-left: 5px" ng-options="c.name as c.name for c in conditions" ng-model="rule.condition" class="form-control input-sm"></select>
-                                      <select class="form-control" id="exampleSelect1" ng-model="rule.data1">
-                                        <option>BIC</option>
-                                        <option>ISLE</option>
-                                        <option>BMAR</option>
-                                      </select>
-                                    </div>
-                                    <div class="form-group">
-                                      <label for="type">Code</label>
-                                       <select style="margin-left: 5px" ng-options="c.name as c.name for c in conditions" ng-model="rule.condition" class="form-control input-sm"></select>
-                                      <input style="margin-left: 5px" type="text" ng-model="rule.data2" class="form-control input-sm" placeholder="code" />
-                                    </div>
-                            
-                            
-                                  </div>
-                                  
-                              </div>
-                            
-                        </div>
-                    </div>
+<div id="container" class="transaction-search" ng-cloak>
+	<accordion close-others="true">
+    	<accordion-group is-open="isFilterOpen" >
+        	<accordion-heading>
+            		Filter Criteria 
+            	<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isFilterOpen, 'glyphicon-chevron-right': !isFilterOpen}"></i>
+        	</accordion-heading>
+        	<form role="form">
+                <div class="alert alert-info">
+                    <strong>Search Criteria :</strong><br><br>
+                    <div ng-bind-html="filterData"></div>
                 </div>
-            </div>
-        </div>
-    </div>
-    </script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular.min.js"></script>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.18/angular-sanitize.min.js"></script>
-    <script src="angular-query-builder.js"></script>
-  </body>
-</html>
+                <div class="form-group">
+                    <div class="row" >
+                        <div class="col-md-4">
+                            <div class="col-md-4 ">
+                                <label for="trx_ref">Transaction Reference</label>
+                            </div>
+                            <div class="col-md-8  ">
+                                <textarea class="form-control" rows="5" id="trx_ref" ng-model="filter.tradeSystemId" placeholder="Transaction Reference" capitalize></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 ">
+                            <div class="col-md-3">
+                                <label for="status">Status</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control" id="status" ng-model="filter.transactionStatus">
+                                    <option>Reportable</option>
+                                    <option>Non-reportable</option>
+                                    <option>Exception</option>
+                                    <option>Rejected</option>
+                                    <option>Reported</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3 ">
+                                <label for="source_sys">Source System</label>
+                            </div>
+                            <div class="col-md-9">
+                               <select class="form-control" ng-model="filter.src_system">
+                                <option>FWS</option>
+                                <option>INTELLECT</option>
+                                <option>PRIMO</option>
+                                <option>TPS</option>
+                            	</select>
+                            </div>
+                            <div class="col-md-3 ">
+                                <label for="execution_status">Execution Status</label>
+                            </div>
+                            <div class="col-md-9">
+                                <select class="form-control" ng-model="filter.exe_status">
+                                <option>NEW</option>
+                                <option>AMEND</option>
+                                <option>CANCEL</option>
+                            	</select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <fieldset class="scheduler-border"><legend class="scheduler-border">Trade Date</legend>
+                            <div class="col-md-3">
+                            <label for="From" class="captionText">From:</label>
+                            </div>
+                            <div class="col-md-9">
+                            <div class='input-group date '  id="fromTradeDate" style="float: right;margin-right: 90px; width: 80%; margin-bottom: 15px;" >
+                                <input type='text' class="form-control" id='startdate'  />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            </div>
+                           <div class="col-md-3">
+                            <label for="To" style="width:134px;font-weight:normal">To:</label>
+                            </div>
+                            <div class="col-md-9">
+                            <div class='input-group date dateselect' id='toTradeDate' style="float: right;margin-right: 90px; width: 80%; margin-bottom: 15px;">
+                                <input type='text' class="form-control" id="endDate" ng-model="search.tradeDateTo" />
+                                <span class="input-group-addon">
+                                    <span class="glyphicon glyphicon-calendar"></span>
+                                </span>
+                            </div>
+                            </div><br><br>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="col-md-4 ">
+                                <label for="trx_ref">Firm Mnemonic</label>
+                            </div>
+                            <div class="col-md-8  ">
+                                <input type="text" class="form-control" ng-model="filter.firm_mnemonic" placeholder="Firm Mnemonic"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="col-md-3 ">
+                                <label for="trx_ref">Counterparty Mnemonic</label>
+                            </div>
+                            <div class="col-md-9  ">
+                                <input type="text" class="form-control" ng-model="filter.counterparty_mnemonic" placeholder="Counterparty Mnemonic"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="col-md-4 ">
+                                <label for="trx_ref">Counterparty GFC ID</label>
+                            </div>
+                            <div class="col-md-8  ">
+                                <input type="text"  class="form-control" ng-model="filter.counterparty_gfcId" placeholder="Counterparty GFC ID"/>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="alert alert-warning fieldsGrp">
+                                <div class="col-md-1">
+                                    <label for="trx_ref">Counterparty:</label>
+                                </div>
+                                <div class="col-md-5 ">
+                                   <div class="col-md-2 ">
+                                    	<label for="trx_ref">Code</label>
+                                	</div>
+                                	<div class="col-md-9 ">
+                                    	<input type="text" class="form-control"  ng-model="filter.counterparty_gfcId" placeholder="Code"/>
+                               		</div>
+                                </div>
+                               	<div class="col-md-6">
+                                   <div class="col-md-3 ">
+                                    	<label for="trx_ref">Code Type</label>
+                                	</div>
+                                	<div class="col-md-8 ">
+                                   		<select class="form-control" ng-model="filter.exe_status">
+    		                                <option>LEI</option>
+    		                                <option>Short Name</option>
+    	                            	</select>
+                               		</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>        
+                        
+                    <div class="row" style="float:right;margin-top:20px;margin-right:20px;">
+	                    <button class="btn btn-primary" type="button" ng-click="status.open = !status.open">Submit</button>
+	                    <button type="submit" class="btn btn-default" ng-click="reset()">Reset</button>
+                    </div>
+               	</div>
+            </form>
+    	</accordion-group>
+
+    	<accordion-group is-open="status.open" is-disabled="status.isresultDisabled">
+	        <accordion-heading>
+	            Search Result 
+	            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+	        </accordion-heading>
+    		<div class="alert alert-info">
+               	<strong>Filter Criteria</strong><br>
+        		<span ng-bind-html="filter"></span>
+            </div> 
+        </accordion-group>
+  </accordion>
+</div>
