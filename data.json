@@ -1,1 +1,130 @@
 
+{
+    "name": "ag83965",
+    "gridDataUrl" : "get/transaction",
+    "welcome_message" : "welcome to bank of england search screen",
+    "fieldsArray" : [
+                        {
+                            "caption": "Transaction Ref",
+                            "model": "filterData.tradeSystemId",
+                            "type": "multi-value",
+                            "name": "tradeRef",
+                            "minLength": 25,
+                            "maxLength": 25
+                        },
+                        {
+                            "caption": "Status",
+                            "model": "filterData.transactionStatus",
+                            "type": "select",
+                            "name": "status",
+                            "options": [{"caption":"", "value":""},{"caption":"Exception", "value":"EXCEPTION"},{"caption":"Rejected", "value":"REJECTED"},{"caption":"Reported", "value":"REPORTED"}]
+                        },
+                       {
+                            "caption": "Counterparty Mnemonic",
+                            "model": "filterData.counterpartyMnemonic",
+                            "type": "string",
+                            "name": "accMnemonic",
+                            "minLength": 25,
+                            "maxLength": 25
+                        },
+                        {
+                            "caption": "Counterparty GFC ID",
+                            "model": "filterData.counterpartyGFCId",
+                            "type": "string",
+                            "name": "accMnemonic",
+                            "minLength": 25,
+                            "maxLength": 25
+                        },
+                        {
+                          "caption": "Source System",
+                          "model": "filterData.sourceSystem",
+                          "type": "select",
+                          "name": "Source System",
+                          "options": [
+                              {"caption":"INTELLECT", "value":"INTELLECT"},
+                              {"caption":"FWS", "value":"FWS"},    
+                              {"caption":"PRIMO", "value":"PRIMO"},
+                              {"caption":"ASSET_FI", "value":"ASSET_FI"},
+                              {"caption":"TPS_CASH", "value":"TPS_CASH"},
+                              {"caption":"GMI", "value":"GMI"},
+                              {"caption":"OASYS", "value":"OASYS"},
+                              {"caption":"TPS", "value":"TPS"},
+                              {"caption":"PFS", "value":"PFS"},
+                              {"caption":"CRS", "value":"CRS"}
+                          ]
+                      }, 
+                      {
+                          "caption": "Execution Status",
+                          "model": "filterData.executionStatus",
+                          "type": "select",
+                          "name": "Source System",
+                          "options": [
+                              {"caption":"NEW", "value":"NEW"},
+                              {"caption":"AMEND", "value":"AMEND"},    
+                              {"caption":"CANCEL", "value":"CANCEL"}
+                          ]
+                      }, 
+                      {
+                          "caption": "Firm Mnemonic",
+                          "model": "filterData.firmMnemonic",
+                          "type": "string",
+                          "name": "counterpartyTwoMnemonic",
+                          "minLength": 25,
+                          "maxLength": 25
+                      },
+                        {
+                            "caption": "Trade Date",
+                            "model": "",
+                            "type": "group",
+                            "children": [
+                              {
+                                "caption": "From",
+                                "model": "filterData.tradeDateFrom",
+                                "type": "datetime",
+                                "name": "fromDate",
+                            	"defaultTime" : "dayStart",
+                            	"mandatory" : true
+                              },
+                              {
+                                "caption": "To",
+                                "model": "filterData.tradeDateTo",
+                                "type": "datetime",
+                                "name": "toDate",
+                            	"defaultTime" : "dayEnd"
+                              }
+                            ]
+                        },
+                        
+                        {
+                            "caption": "Counterparty",
+                            "model": "",
+                            "type": "group",
+                            "children": [
+                               {
+                                "caption": "Code Type",
+                                "model": "filterData.counterpartyOneCodeType",
+                                "type": "select",
+                                "name": "CP_Type",
+                                "options": [
+                                 {
+                                    "caption": "LEI",
+                                    "value": "LEI"
+                                  },
+                                  {
+                                    "caption": "Short Name",
+                                    "value": "short_name"
+                                  }
+                                ]
+                              },
+                              {
+                                "caption": "Code",
+                                "model": "filterData.counterpartyOneCode",
+                                "type": "string",
+                                "name": "securityId",
+                                "minLength": 25,
+                                "maxLength": 25
+                              }
+                            ]
+                        }
+                ]
+}
