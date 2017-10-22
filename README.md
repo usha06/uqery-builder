@@ -1,2 +1,2 @@
 # Query-builder
-implementation of query builder
+Implementation of query builder using AngularJS
